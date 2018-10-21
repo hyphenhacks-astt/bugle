@@ -12,9 +12,6 @@ song = []
 timeSigRandom = np.random.seed()
 keyRandom = np.random.seed()
 tempoRandom = np.random.seed()
-writePhraseRandom = np.random.seed()
-noteRandom1 = np.random.seed()
-noteRandom2 = np.random.seed()
 
 def pickTimeSig(n):
     return(int(np.floor(4*n+2)))
@@ -46,8 +43,8 @@ def addKeys(n):
         temp.append(72+i)
         n.append(temp)
 
-def pickNote(key, chord, n, m):
-    rand = 5*n
+def pickNote(key, chord, i, j):
+    rand = 5*i
     if(rand<=2):
         length = 1
     elif(rand<=4):
@@ -59,16 +56,16 @@ def pickNote(key, chord, n, m):
         possible = [allKeys[key][chord], allKeys[key][chord]+4, allKeys[key][chord]+7]
     else:
         possible = [allKeys[key][chord], allKeys[key][chord]+3, allKeys[key][chord]+7]
-    pitch = possible[np.floor(3*m)]
+    pitch = possible[np.floor(3*j)]
     
     return([pitch, length])
 
-def writePhrase(timeSig, n, key, chord, i, j):
+def writePhrase(timeSig, n, key, chord):
     phraseCurrent = []
     phraseLength = timeSig*(np.ceil(3*n))
     phraseLengthCurrent = 0
     while(phraseLengthCurrent<phraseLength):
-        noteCurrent = pickNote(key, chord, i, j)
+        noteCurrent = pickNote(key, chord, np.random.random(), np.random.random())
         if(phraseLengthCurrent+noteCurrent.length<phraseLength):
             phraseCurrent.append(noteCurrent)
             phraseLengthCurrent += noteCurrent[1]
