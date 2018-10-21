@@ -97,6 +97,7 @@ def writePhrase(song, timeSig, key, songLength):
     phraseLength = 2*timeSig*(math.ceil(2*np.random.random()))
     phraseLengthCurrent = 0
     while(phraseLengthCurrent<phraseLength):
+        print(str(phraseLengthCurrent) + " - " + str(phraseLength))
         noteCurrent = pickNote(key, currentChord(songLength), np.random.random(), np.random.random())
         if(phraseLengthCurrent+noteCurrent[3]<phraseLength):
             phraseCurrent.append(noteCurrent)
@@ -104,6 +105,7 @@ def writePhrase(song, timeSig, key, songLength):
             songLength += noteCurrent[3]
         else:
             song.append(phraseCurrent)
+            break
 
 def pickTempo(n):
     return(int(math.floor(100*n+80)))
@@ -119,4 +121,7 @@ addKeys(allKeys)
 progression = writeProgression()
 songLength = 0
 for i in range(16):
+    print(i)
     writePhrase(song, timeSig, key, songLength)
+
+print(song)
