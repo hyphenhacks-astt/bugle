@@ -121,8 +121,9 @@ for i in range(16):
             song.append(phraseCurrent)
             break
 
-finalMIDI = MIDIFile(1)
+finalMIDI = MIDIFile(2)
 finalMIDI.addTempo(0, 0, tempo)
+finalMIDI.addTempo(1, 0, tempo)
 
 for phrase in song:
     for note in phrase:
