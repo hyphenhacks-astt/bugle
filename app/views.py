@@ -30,7 +30,7 @@ def index():
         fn = '/tmp/out.mp3'
         call('timidity /tmp/out.mid -Ow -o /tmp/out.wav',shell=True)
         #call('ffmpeg -i /tmp/out.wav -ab 128k {}'.format(fn),shell=True)
-        return send_file('/tmp/out.wav')
+        return send_file('/tmp/out.wav',as_attachment=True,mimetype="audio/wav")
     return render_template('index.html',form=form)
 
 @app.errorhandler(404)
