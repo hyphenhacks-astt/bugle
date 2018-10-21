@@ -138,12 +138,6 @@ def pickNote(key, currentChord, nextChord, songLength, swing):
     elif(rand <=5):
         length = 2
     
-    #if(key>11):
-    #    possible = [allKeys[key][chord], allKeys[key][chord]+3, allKeys[key][chord]+7]
-    #else:
-    #    possible = [allKeys[key][chord], allKeys[key][chord]+4, allKeys[key][chord]+7]
-    #pitch = possible[math.floor(3*np.random.random())]
-    #if (key < 11):
     if(length < 0.5):
         pitch = randomChoice(
             (allKeys[key][currentChord],
@@ -164,22 +158,6 @@ def pickNote(key, currentChord, nextChord, songLength, swing):
             allKeys[key][nextChord+6-7]),(4,0,4,0,4,0,0)) #TODO: Use chordWeights?
     #pitch = randomChoice(allKeys[key],(4,1,4,2,4,2,3)) #what if...
     return([0, 0, pitch, songLength+offset, length, 100])
-
-#def currentChord(l, timeSig):
-    # l is partLength
-
-    """if timeSig == 3:
-        if l % 3 <= 0 and l % 3 < 1:
-            return progression[math.floor(l/2)]
-        else:
-            return progression[math.floor(l/2)+1]
-    elif timeSig == 4:
-        return progression[math.floor(l/2)]
-    else:
-        if l % 5 >= 0 and l % 5 < 3:
-            return progression[math.floor(l/2)]
-        else:
-            return progression[math.floor(l/2)+1]"""
 
 def pickTempo(n):
     return(int(math.floor(100*n+80)))
@@ -251,8 +229,6 @@ for part in form:
                 finalMIDI.addNote(note[0], note[1], note[2], note[3]+totalSongLength, note[4], note[5])
         for i, c in enumerate(progression):
             # TODO: Don't play every beat
-            #if(timeSig*(i/2)>partLength+timeSig):
-            #    break
             finalMIDI.addNote(1,1,allKeys[key][c-7]-12,i+totalSongLength,1,60)
             finalMIDI.addNote(1,1,allKeys[key][c+2-7]-12,i+totalSongLength,1,60)
             finalMIDI.addNote(1,1,allKeys[key][c+4-7]-12,i+totalSongLength,1,60)
@@ -265,16 +241,14 @@ for part in form:
         for i, c in enumerate(progression):
             # TODO: Don't play every beat
             # TODO: anticipate chords on swing?
-            #if(timeSig*(i/2)>partLength+timeSig):
-            #    break
             finalMIDI.addNote(1,1,allKeys[key][c-7]-12,i+totalSongLength,1,60)
             finalMIDI.addNote(1,1,allKeys[key][c+2-7]-12,i+totalSongLength,1,60)
             finalMIDI.addNote(1,1,allKeys[key][c+4-7]-12,i+totalSongLength,1,60)
         totalSongLength += blen
-finalMIDI.addNote(0,0,allKeys[key][0],totalSongLength,1,100)
-finalMIDI.addNote(1,1,allKeys[key][0]-12,totalSongLength,1,60)
-finalMIDI.addNote(1,1,allKeys[key][2]-12,totalSongLength,1,60)
-finalMIDI.addNote(1,1,allKeys[key][4]-12,totalSongLength,1,60)
+finalMIDI.addNote(0,0,allKeys[key][0],totalSongLength,timeSig,100)
+finalMIDI.addNote(1,1,allKeys[key][0]-12,totalSongLength,timeSig,60)
+finalMIDI.addNote(1,1,allKeys[key][2]-12,totalSongLength,timeSig,60)
+finalMIDI.addNote(1,1,allKeys[key][4]-12,totalSongLength,timeSig,60)
 
 with open("out.mid", "wb") as output_file:
     finalMIDI.writeFile(output_file)
