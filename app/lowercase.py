@@ -1,7 +1,7 @@
 #h = input('letter?')
-def asciLower(h):
+def asciiLower(h):
 	if(h=='a'):
-		return('01100001'):
+		return('01100001')
 	elif(h=='b'):
 		return('01100010')
 	elif(h=='c'):

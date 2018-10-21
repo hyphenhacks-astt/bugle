@@ -4,3 +4,4 @@ python/
 madpkgs.txt
 *.sublime-workspace
 *.pyc
+*.mid

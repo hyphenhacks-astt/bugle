@@ -1,10 +1,10 @@
-from flask import render_template, flash, redirect, url_for, session, request, g, abort, send_static_file
+from flask import render_template, flash, redirect, url_for, session, request, g, abort, send_file
 from app import app#, db, lm
 from .forms import InputForm
 from subprocess import call
-from temp import createMidiFile
-from uppercase import asciiUppercase
-from lowercase import asciiLowercase
+from .temp import createMidiFile
+from .uppercase import asciiUpper
+from .lowercase import asciiLower
 import string
 from random import random
 from math import floor
@@ -16,15 +16,15 @@ def index():
         s = ""
         for l in form.data.data:
             if l in string.ascii_lowercase:
-                s += asciiLowercase(l)
+                s += asciiLower(l)
             elif l in string.ascii_uppercase:
-                s += asciiUppercase(l)
+                s += asciiUpper(l)
             else:
                 s += l
-        createMidiFile(s)
+        createMidiFile(s,(True if form.swing.data=="swing" else False))
         fn = 'out_{}.mp3'.format(floor(10000*random()))
         call('timidity out.mid -Ow -o - | ffmpeg -i - -ab 128k {}'.format(fn),shell=True)
-        return send_static_file(fn)
+        return send_file(fn)
     return render_template('index.html',form=form)
 
 @app.errorhandler(404)
