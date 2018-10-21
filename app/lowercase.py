@@ -48,7 +48,7 @@ def asciiLower(h):
 	     return('01110111')
 	elif(h=='x'):
 	     return('01111000')
-	elif(h=='Y'):
+	elif(h=='y'):
 	     return('01111001')
 	elif(h=='z'):
 	     return('01111010')
