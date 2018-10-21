@@ -91,7 +91,7 @@ def pickNote(key, chord, i, j):
 def currentChord(l):
     return(progression[np.floor(l/2)])
 
-def writePhrase(timeSig, key, songLength):
+def writePhrase(song, timeSig, key, songLength):
     phraseCurrent = []
     phraseLength = 2*timeSig*(np.ceil(2*np.random.random()))
     phraseLengthCurrent = 0
@@ -118,4 +118,4 @@ addKeys(allKeys)
 progression = writeProgression()
 songLength = 0
 for i in range(16):
-    writePhrase(timeSig, key, songLength)
+    writePhrase(song, timeSig, key, songLength)
