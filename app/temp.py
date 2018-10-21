@@ -11,7 +11,7 @@ import numpy as np
 import math
 from midiutil import MIDIFile
 
-totalSongLength = 0
+partLength = 0
 
 swing = True
 
@@ -47,10 +47,12 @@ def randomChoice(choices, weights):
             return c
 
 def pickForm():
-    return (randomChoice('A','B','A'),
+    return randomChoice(
+        (('A','B','A'),
         ('A','B','A','B'),
         ('A','A','B','B'),
-        ('A','B','B','A'),(1,1,1,1))
+        ('A','B','B','A')),
+        (1,1,1,1))
 
 
 def writeProgression(timeSig, isA):
@@ -137,16 +139,25 @@ def pickNote(key, chord, songLength, swing):
     elif(rand <=5):
         length = 2
     
-    if(key>11):
-        possible = [allKeys[key][chord], allKeys[key][chord]+3, allKeys[key][chord]+7]
-    else:
-        possible = [allKeys[key][chord], allKeys[key][chord]+4, allKeys[key][chord]+7]
-    pitch = possible[math.floor(3*np.random.random())]
-    
+    #if(key>11):
+    #    possible = [allKeys[key][chord], allKeys[key][chord]+3, allKeys[key][chord]+7]
+    #else:
+    #    possible = [allKeys[key][chord], allKeys[key][chord]+4, allKeys[key][chord]+7]
+    #pitch = possible[math.floor(3*np.random.random())]
+    #if (key < 11):
+    pitch = randomChoice(
+        (allKeys[key][chord],
+        allKeys[key][chord+1-7],
+        allKeys[key][chord+2-7],
+        allKeys[key][chord+3-7],
+        allKeys[key][chord+4-7],
+        allKeys[key][chord+5-7],
+        allKeys[key][chord+6-7]),(4,1,4,2,4,2,3))
+    #pitch = randomChoice(allKeys[key],(4,1,4,2,4,2,3)) #what if...
     return([0, 0, pitch, songLength+offset, length, 100])
 
 #def currentChord(l, timeSig):
-    # l is totalSongLength
+    # l is partLength
 
     """if timeSig == 3:
         if l % 3 <= 0 and l % 3 < 1:
@@ -175,40 +186,42 @@ addKeys(allKeys)
 progressiona = writeProgression(timeSig, True)
 alen = 0
 blen = 0
+partLength = 0
 for i in range(2):
     phraseCurrent = []
     phraseLength = 2*timeSig*(math.ceil(2*np.random.random()))
     phraseLengthCurrent = 0
     while(phraseLengthCurrent<phraseLength):
-        noteCurrent = pickNote(key, progressiona[math.floor(totalSongLength)], totalSongLength, swing)
+        noteCurrent = pickNote(key, progressiona[math.floor(partLength)], partLength, swing)
         if(phraseLengthCurrent+noteCurrent[4]<phraseLength):
             phraseCurrent.append(noteCurrent)
             phraseLengthCurrent += noteCurrent[4]
-            totalSongLength += noteCurrent[4]
+            partLength += noteCurrent[4]
         else:
             phraseCurrent[-1][4] += phraseLength-phraseLengthCurrent
-            totalSongLength += phraseLength-phraseLengthCurrent
+            partLength += phraseLength-phraseLengthCurrent
             A.append(phraseCurrent)
             break
-alen = totalSongLength
+alen = int(partLength)
 progressiona = progressiona[:alen]
+partLength = 0
 progressionb = writeProgression(timeSig, False)
 for i in range(2):
     phraseCurrent = []
     phraseLength = 2*timeSig*(math.ceil(2*np.random.random()))
     phraseLengthCurrent = 0
     while(phraseLengthCurrent<phraseLength):
-        noteCurrent = pickNote(key, progressionb[math.floor(totalSongLength)], totalSongLength, swing)
+        noteCurrent = pickNote(key, progressionb[math.floor(partLength)], partLength, swing)
         if(phraseLengthCurrent+noteCurrent[4]<phraseLength):
             phraseCurrent.append(noteCurrent)
             phraseLengthCurrent += noteCurrent[4]
-            totalSongLength += noteCurrent[4]
+            partLength += noteCurrent[4]
         else:
             phraseCurrent[-1][4] += phraseLength-phraseLengthCurrent
-            totalSongLength += phraseLength-phraseLengthCurrent
+            partLength += phraseLength-phraseLengthCurrent
             B.append(phraseCurrent)
             break
-blen = totalSongLength-alen
+blen = int(partLength)
 progressionb = progressionb[:blen]
 
 finalMIDI = MIDIFile(2)
@@ -218,42 +231,38 @@ finalMIDI.addTempo(1, 0, tempo)
 print(timeSig)
 
 form = pickForm()
+print(form)
+totalSongLength = 0
 
 for part in form:
     if part is 'A':
+        progression = progressiona
         for phrase in A:
             for note in phrase:
-                finalMIDI.addNote(note[0], note[1], note[2], note[3], note[4], note[5])
+                finalMIDI.addNote(note[0], note[1], note[2], note[3]+totalSongLength, note[4], note[5])
+        for i, c in enumerate(progression):
+            # TODO: Don't play every beat
+            # TODO: anticipate chords on swing?
+            #if(timeSig*(i/2)>partLength+timeSig):
+            #    break
+            finalMIDI.addNote(1,1,allKeys[key][c-7]-12,i+totalSongLength,1,60)
+            finalMIDI.addNote(1,1,allKeys[key][c+2-7]-12,i+totalSongLength,1,60)
+            finalMIDI.addNote(1,1,allKeys[key][c+4-7]-12,i+totalSongLength,1,60)
+        totalSongLength += alen
     else:
+        progression = progressionb
         for phrase in B:
             for note in phrase:
-                finalMIDI.addNote(note[0], note[1], note[2], note[3], note[4], note[5])
-
-
-lastduration = 0
-for i, c in enumerate(progression):
-    # TODO: Don't play every beat
-    # TODO: anticipate chords on swing?
-    #if(timeSig*(i/2)>totalSongLength+timeSig):
-    #    break
-    """if timeSig == 3:
-        if i % 2 == 0:
-            duration = 1
-        else:
-            duration = 2
-    elif timeSig == 4:
-        duration = 2
-    elif timeSig == 5:
-        if i % 2 == 0:
-            duration = 3
-        else:
-            duration = 2"""
-    finalMIDI.addNote(1,1,allKeys[key][c]-12,i,1,60)
-    finalMIDI.addNote(1,1,allKeys[key][c]+7-12,i,1,60)
-    if key <= 11:
-        finalMIDI.addNote(1,1,allKeys[key][c]+4-12,i,1,60)
-    else:
-        finalMIDI.addNote(1,1,allKeys[key][c]+3-12,i,1,60)
+                finalMIDI.addNote(note[0], note[1], note[2], note[3]+totalSongLength, note[4], note[5])
+        for i, c in enumerate(progression):
+            # TODO: Don't play every beat
+            # TODO: anticipate chords on swing?
+            #if(timeSig*(i/2)>partLength+timeSig):
+            #    break
+            finalMIDI.addNote(1,1,allKeys[key][c-7]-12,i+totalSongLength,1,60)
+            finalMIDI.addNote(1,1,allKeys[key][c+2-7]-12,i+totalSongLength,1,60)
+            finalMIDI.addNote(1,1,allKeys[key][c+4-7]-12,i+totalSongLength,1,60)
+        totalSongLength += blen
 
 with open("out.mid", "wb") as output_file:
     finalMIDI.writeFile(output_file)
