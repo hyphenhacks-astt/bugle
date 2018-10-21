@@ -14,16 +14,16 @@ def index():
     form=InputForm()
     if form.validate_on_submit():
         print("VALID")
-        s = ""
-        for l in form.data.data:
-            if l in string.ascii_lowercase:
-                s += asciiLower(l)
-            elif l in string.ascii_uppercase:
-                s += asciiUpper(l)
-            else:
-                s += l
-        createMidiFile(s,(True if form.swing.data=="swing" else False))
-        fn = 'out_{}.mp3'.format(floor(10000*random()))
+        #s = ""
+        #for l in form.data.data:
+        #    if l in string.ascii_lowercase:
+        #        s += asciiLower(l)
+        #    elif l in string.ascii_uppercase:
+        #        s += asciiUpper(l)
+        #    else:
+        #        s += l
+        createMidiFile(form.data.data,(True if form.swing.data=="swing" else False))
+        fn = 'out.mp3'
         call('timidity /tmp/out.mid -Ow -o /tmp/out.wav',shell=True)
         call('ffmpeg -i /tmp/out.wav -ab 128k app/{}'.format(fn),shell=True)
         return send_file(fn)
