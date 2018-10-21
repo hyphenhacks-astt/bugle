@@ -7,6 +7,7 @@ This is a temporary script file.
 import numpy as np
 
 allKeys = []
+song = []
 
 def pickTimeSig(n):
     return(int(np.floor(4*n+2)))
@@ -37,9 +38,20 @@ def addKeys(n):
         temp.append(70+i)
         temp.append(72+i)
         n.append(temp)
-'''
-def pickNote(key, chord):
+
+def pickNote(key, chord, n, m):
+    rand = 5*n
+    if(rand<=2):
+        length = 1
+    elif(rand<=4):
+        length = .5
+    elif(rand <=5):
+        length = 2
     
+    possible = [allKeys[key][chord], allKeys[key][chord+2], allKeys[key][chord+4]]
+    pitch = possible[np.floor(3*m)]
+    
+    return([pitch, length])
 
 def writePhrase(timeSig, n):
     phraseCurrent = []
@@ -49,10 +61,11 @@ def writePhrase(timeSig, n):
         noteCurrent = pickNote()
         if(phraseLengthCurrent+noteCurrent.length<phraseLength):
             phraseCurrent.append(noteCurrent)
-            phraseLengthCurrent += noteCurrent.length
+            phraseLengthCurrent += noteCurrent[1]
         else:
-            break
-'''
+            song.append(phraseCurrent)
+            
+
 def pickTempo(n):
     return(int(np.floor(100*n+80)))
 
