@@ -9,6 +9,13 @@ import numpy as np
 allKeys = []
 song = []
 
+timeSigRandom = np.random.seed()
+keyRandom = np.random.seed()
+tempoRandom = np.random.seed()
+writePhraseRandom = np.random.seed()
+noteRandom1 = np.random.seed()
+noteRandom2 = np.random.seed()
+
 def pickTimeSig(n):
     return(int(np.floor(4*n+2)))
 
@@ -71,13 +78,10 @@ def writePhrase(timeSig, n, key, chord, i, j):
 def pickTempo(n):
     return(int(np.floor(100*n+80)))
 
-temp = np.random.random()
-timeSig = pickTimeSig(temp)
+timeSig = pickTimeSig(timeSigRandom)
 
-temp = np.random.random()
-key = pickKey(temp)
+key = pickKey(keyRandom)
 
-temp = np.random.random()
-tempo = pickTempo(temp)
+tempo = pickTempo(tempoRandom)
 
 addKeys(allKeys)
