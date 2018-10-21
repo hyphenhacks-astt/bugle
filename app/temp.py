@@ -251,7 +251,6 @@ for part in form:
                 finalMIDI.addNote(note[0], note[1], note[2], note[3]+totalSongLength, note[4], note[5])
         for i, c in enumerate(progression):
             # TODO: Don't play every beat
-            # TODO: anticipate chords on swing?
             #if(timeSig*(i/2)>partLength+timeSig):
             #    break
             finalMIDI.addNote(1,1,allKeys[key][c-7]-12,i+totalSongLength,1,60)
