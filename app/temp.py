@@ -12,6 +12,7 @@ song = []
 timeSigRandom = np.random.seed()
 keyRandom = np.random.seed()
 tempoRandom = np.random.seed()
+numberOfPhrases = np.random.seed()
 
 def pickTimeSig(n):
     return(int(np.floor(4*n+2)))
@@ -71,6 +72,11 @@ def writePhrase(timeSig, n, key, chord):
             phraseLengthCurrent += noteCurrent[1]
         else:
             song.append(phraseCurrent)
+
+def writeSong(n, timeSig, key, chord):
+    numPhrases = 4*(np.ceil(8*n)+8)
+    for i in range(numPhrases):
+        writePhrase(timeSig, np.random.random(), key, chord)
 
 def pickTempo(n):
     return(int(np.floor(100*n+80)))
