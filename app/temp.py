@@ -99,10 +99,10 @@ def writePhrase(song, timeSig, key, songLength):
     while(phraseLengthCurrent<phraseLength):
         print(str(phraseLengthCurrent) + " - " + str(phraseLength))
         noteCurrent = pickNote(key, currentChord(songLength), songLength)
-        if(phraseLengthCurrent+noteCurrent[3]<phraseLength):
+        if(phraseLengthCurrent+noteCurrent[4]<phraseLength):
             phraseCurrent.append(noteCurrent)
-            phraseLengthCurrent += noteCurrent[3]
-            songLength += noteCurrent[3]
+            phraseLengthCurrent += noteCurrent[4]
+            songLength += noteCurrent[4]
         else:
             song.append(phraseCurrent)
             break
