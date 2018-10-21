@@ -264,7 +264,7 @@ def createMidiFile(s=None,swing=True):
     finalMIDI.addNote(1,1,allKeys[key][2]-12,totalSongLength,timeSig,60)
     finalMIDI.addNote(1,1,allKeys[key][4]-12,totalSongLength,timeSig,60)
 
-    with open(os.path.join(os.getcwd(),"app/out.mid"), "wb") as output_file:
+    with open("/var/www/bugle/app/out.mid", "wb") as output_file:
         finalMIDI.writeFile(output_file)
 
 if __name__ == "__main__":
