@@ -56,12 +56,12 @@ def pickNote(key, chord, n, m):
     
     return([pitch, length])
 
-def writePhrase(timeSig, n):
+def writePhrase(timeSig, n, key, chord, i, j):
     phraseCurrent = []
     phraseLength = timeSig*(np.ceil(3*n))
     phraseLengthCurrent = 0
     while(phraseLengthCurrent<phraseLength):
-        noteCurrent = pickNote()
+        noteCurrent = pickNote(key, chord, i, j)
         if(phraseLengthCurrent+noteCurrent.length<phraseLength):
             phraseCurrent.append(noteCurrent)
             phraseLengthCurrent += noteCurrent[1]
