@@ -56,14 +56,25 @@ def pickForm():
 
 
 def writeProgression(timeSig, isA):
-    if isA:
-        chords = [0]
+    if(isA):
+        if(timeSig==3):
+            chords = [0]
+        elif(timeSig==4):
+            chords = [0, 0]
+        elif(timeSig==5):
+            chords = [0, 0, 0]
     else:
-        chords= [5]
+        if(timeSig==3):
+            chords = [5]
+        elif(timeSig==4):
+            chords = [5, 5]
+        elif(timeSig==5):
+            chords = [5, 5, 5]
     last = 0
-    x = 0
+    x = len(chords)
+    print(chords)
     while len(chords) < 100:
-        x += 1
+        x = len(chords)
         tone = randomChoice(range(0,7),chordWeights[last])
         if timeSig == 3:
             if x % 3 == 0:
@@ -92,6 +103,7 @@ def writeProgression(timeSig, isA):
             else:
                 continue
             last = tone
+    print(chords)
     return chords
 
 def pickTimeSig(n):
