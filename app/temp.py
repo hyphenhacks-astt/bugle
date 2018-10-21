@@ -48,7 +48,10 @@ def pickNote(key, chord, n, m):
     elif(rand <=5):
         length = 2
     
-    possible = [allKeys[key][chord], allKeys[key][chord+2], allKeys[key][chord+4]]
+    if(key>11):
+        possible = [allKeys[key][chord], allKeys[key][chord]+4, allKeys[key][chord]+7]
+    else:
+        possible = [allKeys[key][chord], allKeys[key][chord]+3, allKeys[key][chord]+7]
     pitch = possible[np.floor(3*m)]
     
     return([pitch, length])
@@ -64,7 +67,6 @@ def writePhrase(timeSig, n):
             phraseLengthCurrent += noteCurrent[1]
         else:
             song.append(phraseCurrent)
-            
 
 def pickTempo(n):
     return(int(np.floor(100*n+80)))
