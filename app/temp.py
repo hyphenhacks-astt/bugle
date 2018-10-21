@@ -122,7 +122,7 @@ def addKeys(n):
         temp.append(70+i)
         n.append(temp)
 
-def pickNote(key, chord, songLength, swing):
+def pickNote(key, currentChord, nextChord, songLength, swing):
     rand = 5*np.random.random()
     offset = 0
     if(rand<=2):
@@ -144,14 +144,24 @@ def pickNote(key, chord, songLength, swing):
     #    possible = [allKeys[key][chord], allKeys[key][chord]+4, allKeys[key][chord]+7]
     #pitch = possible[math.floor(3*np.random.random())]
     #if (key < 11):
-    pitch = randomChoice(
-        (allKeys[key][chord],
-        allKeys[key][chord+1-7],
-        allKeys[key][chord+2-7],
-        allKeys[key][chord+3-7],
-        allKeys[key][chord+4-7],
-        allKeys[key][chord+5-7],
-        allKeys[key][chord+6-7]),(4,1,4,3,4,2,1)) #TODO: Use chordWeights?
+    if(length < 0.5):
+        pitch = randomChoice(
+            (allKeys[key][currentChord],
+            allKeys[key][currentChord+1-7],
+            allKeys[key][currentChord+2-7],
+            allKeys[key][currentChord+3-7],
+            allKeys[key][currentChord+4-7],
+            allKeys[key][currentChord+5-7],
+            allKeys[key][currentChord+6-7]),(4,1,4,3,4,2,1)) #TODO: Use chordWeights?
+    else:
+        pitch = randomChoice(
+            (allKeys[key][nextChord],
+            allKeys[key][nextChord+1-7],
+            allKeys[key][nextChord+2-7],
+            allKeys[key][nextChord+3-7],
+            allKeys[key][nextChord+4-7],
+            allKeys[key][nextChord+5-7],
+            allKeys[key][nextChord+6-7]),(4,0,4,0,4,0,0)) #TODO: Use chordWeights?
     #pitch = randomChoice(allKeys[key],(4,1,4,2,4,2,3)) #what if...
     return([0, 0, pitch, songLength+offset, length, 100])
 
@@ -191,7 +201,7 @@ for i in range(2):
     phraseLength = 2*timeSig*(math.ceil(2*np.random.random()))
     phraseLengthCurrent = 0
     while(phraseLengthCurrent<phraseLength):
-        noteCurrent = pickNote(key, progressiona[math.floor(partLength)], partLength, swing)
+        noteCurrent = pickNote(key, progressiona[math.floor(partLength)],progressiona[math.floor(partLength)+1], partLength, swing)
         if(phraseLengthCurrent+noteCurrent[4]<phraseLength):
             phraseCurrent.append(noteCurrent)
             phraseLengthCurrent += noteCurrent[4]
@@ -210,7 +220,7 @@ for i in range(2):
     phraseLength = 2*timeSig*(math.ceil(2*np.random.random()))
     phraseLengthCurrent = 0
     while(phraseLengthCurrent<phraseLength):
-        noteCurrent = pickNote(key, progressionb[math.floor(partLength)], partLength, swing)
+        noteCurrent = pickNote(key, progressionb[math.floor(partLength)], progressionb[math.floor(partLength)+1], partLength, swing)
         if(phraseLengthCurrent+noteCurrent[4]<phraseLength):
             phraseCurrent.append(noteCurrent)
             phraseLengthCurrent += noteCurrent[4]
