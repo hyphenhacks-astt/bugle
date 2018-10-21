@@ -8,25 +8,27 @@ import numpy as np
 
 allKeys = []
 song = []
+np.random.seed(None)
 
-timeSigRandom = np.random.seed()
-keyRandom = np.random.seed()
-tempoRandom = np.random.seed()
-numberOfPhrases = np.random.seed()
+timeSigRandom = np.random.random()
+keyRandom = np.random.random()
+tempoRandom = np.random.random()
+numberOfPhrases = np.random.random()
 
-def randomChoice(choices):
+def randomChoice(choices, weights):
     # [(choice, weight)]
     wtot = 0
-    for c, w in choices:
+    for c, w in zip(choices, weights):
         wtot += w
     r = np.random.random() * wtot
-    for c, w in choices:
+    for c, w in zip(choices, weights):
         r -= w
         if r <= 0:
             return c
 
 def writeProgression(key):
-    np.random.random()
+    first = randomChoice(key, [4,0,1,])
+    
 
 def pickTimeSig(n):
     return(int(np.floor(4*n+2)))
