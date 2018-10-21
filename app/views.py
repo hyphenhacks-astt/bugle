@@ -22,11 +22,15 @@ def index():
         #        s += asciiUpper(l)
         #    else:
         #        s += l
-        createMidiFile(form.data.data,(True if form.swing.data=="swing" else False))
+        if form.swing.data == "swing":
+            swing = True
+        else:
+            swing = False
+        createMidiFile(form.data.data,swing)
         fn = '/tmp/out.mp3'
         call('timidity /tmp/out.mid -Ow -o /tmp/out.wav',shell=True)
-        call('ffmpeg -i /tmp/out.wav -ab 128k {}'.format(fn),shell=True)
-        return send_file(fn)
+        #call('ffmpeg -i /tmp/out.wav -ab 128k {}'.format(fn),shell=True)
+        return send_file('/tmp/out.wav')
     return render_template('index.html',form=form)
 
 @app.errorhandler(404)
