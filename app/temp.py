@@ -6,6 +6,7 @@ This is a temporary script file.
 """
 import numpy as np
 import math
+from midiutil import MIDIFile
 
 chordWeights = (
     (4,1,4,1,4,1,1), #root
@@ -97,7 +98,6 @@ def writePhrase(song, timeSig, key, songLength):
     phraseLength = 2*timeSig*(math.ceil(2*np.random.random()))
     phraseLengthCurrent = 0
     while(phraseLengthCurrent<phraseLength):
-        print(str(phraseLengthCurrent) + " - " + str(phraseLength))
         noteCurrent = pickNote(key, currentChord(songLength), songLength)
         if(phraseLengthCurrent+noteCurrent[4]<phraseLength):
             phraseCurrent.append(noteCurrent)
@@ -121,7 +121,11 @@ addKeys(allKeys)
 progression = writeProgression()
 songLength = 0
 for i in range(16):
-    print(i)
     writePhrase(song, timeSig, key, songLength)
 
-print(song)
+finalMIDI = MIDIFile(1)
+finalMIDI.addTempo(0, 0, tempo)
+
+for phrase in song:
+    for note in phrase:
+        finalMIDI.addNote(note[0], note[1], note[2], note[3], note[4], note[5])
