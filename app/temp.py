@@ -6,6 +6,16 @@ This is a temporary script file.
 """
 import numpy as np
 
+chordWeights = (
+    (4,1,4,1,4,1,1), #root
+    (4,4,4,1,4,1,1), #2nd
+    (4,1,4,4,4,1,4), #3rd
+    (2,1,2,4,4,1,1), #4th
+    (4,1,4,1,4,4,1), #5th
+    (2,1,1,1,4,4,4), #6th
+    (4,1,4,1,4,3,4)  #7th
+)
+
 allKeys = []
 song = []
 np.random.seed(None)
@@ -26,9 +36,11 @@ def randomChoice(choices, weights):
         if r <= 0:
             return c
 
-def writeProgression(key):
-    first = randomChoice(key, [4,0,1,])
-    
+def writeProgression():
+    chords = []
+    last = randomChoice(range(0,7),(8,1,2,1,4,1,1))
+    for x in range(0,128):
+        chords.append(randomChoice(range(0,7),chordWeights[last]))
 
 def pickTimeSig(n):
     return(int(np.floor(4*n+2)))
@@ -40,24 +52,22 @@ def addKeys(n):
     for i in range(12):
         temp = []
         temp.append(60+i)
-        temp.append(62+1)
+        temp.append(62+i)
         temp.append(64+i)
         temp.append(65+i)
         temp.append(67+i)
         temp.append(69+i)
         temp.append(71+i)
-        temp.append(72+i)
         n.append(temp)
     for i in range(12):
         temp = []
         temp.append(60+i)
-        temp.append(62+1)
+        temp.append(62+i)
         temp.append(63+i)
         temp.append(65+i)
         temp.append(67+i)
         temp.append(68+i)
         temp.append(70+i)
-        temp.append(72+i)
         n.append(temp)
 
 def pickNote(key, chord, i, j):
