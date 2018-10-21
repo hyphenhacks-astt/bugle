@@ -5,6 +5,7 @@ Spyder Editor
 This is a temporary script file.
 """
 import numpy as np
+import math
 
 chordWeights = (
     (4,1,4,1,4,1,1), #root
@@ -44,10 +45,10 @@ def writeProgression():
     return chords
 
 def pickTimeSig(n):
-    return(int(np.floor(3*n+3)))
+    return(int(math.floor(3*n+3)))
 
 def pickKey(n):
-    return(int(np.floor(12*n)))
+    return(int(math.floor(12*n)))
     
 def addKeys(n):
     for i in range(12):
@@ -84,16 +85,16 @@ def pickNote(key, chord, i, j):
         possible = [allKeys[key][chord], allKeys[key][chord]+3, allKeys[key][chord]+7]
     else:
         possible = [allKeys[key][chord], allKeys[key][chord]+4, allKeys[key][chord]+7]
-    pitch = possible[np.floor(3*j)]
+    pitch = possible[math.floor(3*j)]
     
     return([0, 0, pitch, length, 100])
 
 def currentChord(l):
-    return(progression[np.floor(l/2)])
+    return(progression[math.floor(l/2)])
 
 def writePhrase(song, timeSig, key, songLength):
     phraseCurrent = []
-    phraseLength = 2*timeSig*(np.ceil(2*np.random.random()))
+    phraseLength = 2*timeSig*(math.ceil(2*np.random.random()))
     phraseLengthCurrent = 0
     while(phraseLengthCurrent<phraseLength):
         noteCurrent = pickNote(key, currentChord(songLength), np.random.random(), np.random.random())
@@ -105,7 +106,7 @@ def writePhrase(song, timeSig, key, songLength):
             song.append(phraseCurrent)
 
 def pickTempo(n):
-    return(int(np.floor(100*n+80)))
+    return(int(math.floor(100*n+80)))
 
 timeSig = pickTimeSig(timeSigRandom)
 
