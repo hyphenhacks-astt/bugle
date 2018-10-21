@@ -23,9 +23,9 @@ def index():
         #    else:
         #        s += l
         createMidiFile(form.data.data,(True if form.swing.data=="swing" else False))
-        fn = 'out.mp3'
+        fn = '/var/www/bugle/app/out.mp3'
         call('timidity /tmp/out.mid -Ow -o /tmp/out.wav',shell=True)
-        call('ffmpeg -i /tmp/out.wav -ab 128k app/{}'.format(fn),shell=True)
+        call('ffmpeg -i /tmp/out.wav -ab 128k {}'.format(fn),shell=True)
         return send_file(fn)
     return render_template('index.html',form=form)
 
