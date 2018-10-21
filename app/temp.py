@@ -98,7 +98,7 @@ def writePhrase(song, timeSig, key, songLength):
     phraseLengthCurrent = 0
     while(phraseLengthCurrent<phraseLength):
         noteCurrent = pickNote(key, currentChord(songLength), np.random.random(), np.random.random())
-        if(phraseLengthCurrent+noteCurrent.length<phraseLength):
+        if(phraseLengthCurrent+noteCurrent[3]<phraseLength):
             phraseCurrent.append(noteCurrent)
             phraseLengthCurrent += noteCurrent[3]
             songLength += noteCurrent[3]
