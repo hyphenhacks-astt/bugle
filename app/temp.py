@@ -16,7 +16,7 @@ chordWeights = (
     (4,1,4,1,4,3,4)  #7th
 )
 
-allKeys = []
+allKeys = [] #allKeys is a list of lists, each list is a series of MIDI tones
 song = []
 np.random.seed(None)
 
@@ -41,9 +41,10 @@ def writeProgression():
     last = randomChoice(range(0,7),(8,1,2,1,4,1,1))
     for x in range(0,128):
         chords.append(randomChoice(range(0,7),chordWeights[last]))
+    return chords
 
 def pickTimeSig(n):
-    return(int(np.floor(4*n+2)))
+    return(int(np.floor(3*n+3)))
 
 def pickKey(n):
     return(int(np.floor(12*n)))
@@ -80,22 +81,26 @@ def pickNote(key, chord, i, j):
         length = 2
     
     if(key>11):
-        possible = [allKeys[key][chord], allKeys[key][chord]+4, allKeys[key][chord]+7]
-    else:
         possible = [allKeys[key][chord], allKeys[key][chord]+3, allKeys[key][chord]+7]
+    else:
+        possible = [allKeys[key][chord], allKeys[key][chord]+4, allKeys[key][chord]+7]
     pitch = possible[np.floor(3*j)]
     
     return([0, 0, pitch, length, 100])
 
-def writePhrase(timeSig, n, key, chord):
+def currentChord(l):
+    return(progression[np.floor(l/2)])
+
+def writePhrase(timeSig, key):
     phraseCurrent = []
-    phraseLength = 2*timeSig*(np.ceil(2*n))
+    phraseLength = 2*timeSig*(np.ceil(2*np.random.random()))
     phraseLengthCurrent = 0
     while(phraseLengthCurrent<phraseLength):
-        noteCurrent = pickNote(key, chord, np.random.random(), np.random.random())
+        noteCurrent = pickNote(key, currentChord(songLength), np.random.random(), np.random.random())
         if(phraseLengthCurrent+noteCurrent.length<phraseLength):
             phraseCurrent.append(noteCurrent)
-            phraseLengthCurrent += noteCurrent[1]
+            phraseLengthCurrent += noteCurrent[3]
+            songLength += noteCurrent[3]
         else:
             song.append(phraseCurrent)
 
@@ -104,11 +109,13 @@ def pickTempo(n):
 
 timeSig = pickTimeSig(timeSigRandom)
 
-key = pickKey(keyRandom)
+key = pickKey(keyRandom) #key is a number between 0 and 23
 
 tempo = pickTempo(tempoRandom)
 
 addKeys(allKeys)
 
+progression = writeProgression()
+songLength = 0
 for i in range(16):
-    writePhrase(timeSig, np.random.random(), key, chord)
+    writePhrase(timeSig, key)
