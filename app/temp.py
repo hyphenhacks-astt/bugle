@@ -14,6 +14,20 @@ keyRandom = np.random.seed()
 tempoRandom = np.random.seed()
 numberOfPhrases = np.random.seed()
 
+def randomChoice(choices):
+    # [(choice, weight)]
+    wtot = 0
+    for c, w in choices:
+        wtot += w
+    r = np.random.random() * wtot
+    for c, w in choices:
+        r -= w
+        if r <= 0:
+            return c
+
+def writeProgression(key):
+    np.random.random()
+
 def pickTimeSig(n):
     return(int(np.floor(4*n+2)))
 
