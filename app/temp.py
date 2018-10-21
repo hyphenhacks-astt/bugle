@@ -85,7 +85,7 @@ def pickNote(key, chord, i, j):
         possible = [allKeys[key][chord], allKeys[key][chord]+3, allKeys[key][chord]+7]
     pitch = possible[np.floor(3*j)]
     
-    return([pitch, length])
+    return([0, 0, pitch, length, 100])
 
 def writePhrase(timeSig, n, key, chord):
     phraseCurrent = []
