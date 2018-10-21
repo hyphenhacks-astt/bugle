@@ -7,9 +7,10 @@ This is a temporary script file.
 
 #TODO: beats, diff for a and b
 
-import numpy as np
 import math
 from midiutil import MIDIFile
+import hashlib
+import random
 
 def createMidiFile(s=None,swing=True):
     partLength = 0
@@ -27,19 +28,21 @@ def createMidiFile(s=None,swing=True):
     allKeys = [] #allKeys is a list of lists, each list is a series of MIDI tones
     A = []
     B = []
-    np.random.seed(s)
+    #h = hashlib.sha256()
+    #h.update(s.encode('utf-8'))
+    random.seed(s)
 
-    timeSigRandom = np.random.random()
-    keyRandom = np.random.random()
-    tempoRandom = np.random.random()
-    numberOfPhrases = np.random.random()
+    timeSigRandom = random.random()
+    keyRandom = random.random()
+    tempoRandom = random.random()
+    numberOfPhrases = random.random()
 
     def randomChoice(choices, weights):
         # [(choice, weight)]
         wtot = 0
         for c, w in zip(choices, weights):
             wtot += w
-        r = np.random.random() * wtot
+        r = random.random() * wtot
         for c, w in zip(choices, weights):
             r -= w
             if r <= 0:
@@ -134,7 +137,7 @@ def createMidiFile(s=None,swing=True):
             n.append(temp)
 
     def pickNote(key, currentChord, nextChord, songLength, swing):
-        rand = 5*np.random.random()
+        rand = 5*random.random()
         offset = 0
         if(rand<=2):
             length = 1
@@ -187,7 +190,7 @@ def createMidiFile(s=None,swing=True):
     partLength = 0
     for i in range(2):
         phraseCurrent = []
-        phraseLength = 2*timeSig*(math.ceil(2*np.random.random()))
+        phraseLength = 2*timeSig*(math.ceil(2*random.random()))
         phraseLengthCurrent = 0
         while(phraseLengthCurrent<phraseLength):
             noteCurrent = pickNote(key, progressiona[math.floor(partLength)],progressiona[math.floor(partLength)+1], partLength, swing)
@@ -206,7 +209,7 @@ def createMidiFile(s=None,swing=True):
     progressionb = writeProgression(timeSig, False)
     for i in range(2):
         phraseCurrent = []
-        phraseLength = 2*timeSig*(math.ceil(2*np.random.random()))
+        phraseLength = 2*timeSig*(math.ceil(2*random.random()))
         phraseLengthCurrent = 0
         while(phraseLengthCurrent<phraseLength):
             noteCurrent = pickNote(key, progressionb[math.floor(partLength)], progressionb[math.floor(partLength)+1], partLength, swing)
@@ -261,7 +264,7 @@ def createMidiFile(s=None,swing=True):
     finalMIDI.addNote(1,1,allKeys[key][2]-12,totalSongLength,timeSig,60)
     finalMIDI.addNote(1,1,allKeys[key][4]-12,totalSongLength,timeSig,60)
 
-    with open("out.mid", "wb") as output_file:
+    with open("app/out.mid", "wb") as output_file:
         finalMIDI.writeFile(output_file)
 
 if __name__ == "__main__":

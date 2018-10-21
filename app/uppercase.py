@@ -48,9 +48,9 @@ def asciiUpper(h):
 		return('01010111')
 	elif(h=='X'):
 		return('01011000')
-	elif(h=='y'):
+	elif(h=='Y'):
 		return('01011001')
-	elif(h=='z'):
+	elif(h=='Z'):
 		return('01011010')
 
 		

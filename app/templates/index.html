@@ -8,21 +8,29 @@ img {
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 10px;
+    /*height: 50%;
+    width: 135px;
+    max-height: 50%;
+    width: 50%;*/
 }
 body {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+.image {
+  height: auto;
+  width: 800px;
+}
 </style>
 </head>
 <body style="background-color:pink;">
-
-<h1>how to convert text into music</h1>
-<p>OUR PROJECT IS ABOUT CONVERTING TEXT INTO MUSIC.</p>
-<img src="static/images/waves.jpg" alt="sound waves" style="width:50%;" />
+<h1>BUGLE</h1>
+<p>generate music from text!</p>
+<div class="image"><img src="static/images/waves.jpg" alt="sound waves" style="width:50%;" /></div>
 <div align="middle">
 <form method="POST">
+  {{form.hidden_tag()}}
 FEED ME: {{ form.data }} <br />
   {% for f in form.swing %}
   {{ f }} {{ f.label }}<br />
