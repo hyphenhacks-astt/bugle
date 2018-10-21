@@ -135,7 +135,6 @@ def pickNote(key, chord, songLength, swing):
                 length=.33
         else:
             length = .5
-            offset = .17
     elif(rand <=5):
         length = 2
     
@@ -152,7 +151,7 @@ def pickNote(key, chord, songLength, swing):
         allKeys[key][chord+3-7],
         allKeys[key][chord+4-7],
         allKeys[key][chord+5-7],
-        allKeys[key][chord+6-7]),(4,1,4,2,4,2,3))
+        allKeys[key][chord+6-7]),(4,1,4,3,4,2,1)) #TODO: Use chordWeights?
     #pitch = randomChoice(allKeys[key],(4,1,4,2,4,2,3)) #what if...
     return([0, 0, pitch, songLength+offset, length, 100])
 
@@ -263,6 +262,10 @@ for part in form:
             finalMIDI.addNote(1,1,allKeys[key][c+2-7]-12,i+totalSongLength,1,60)
             finalMIDI.addNote(1,1,allKeys[key][c+4-7]-12,i+totalSongLength,1,60)
         totalSongLength += blen
+finalMIDI.addNote(0,0,allKeys[key][0],totalSongLength,1,100)
+finalMIDI.addNote(1,1,allKeys[key][0]-12,totalSongLength,1,60)
+finalMIDI.addNote(1,1,allKeys[key][2]-12,totalSongLength,1,60)
+finalMIDI.addNote(1,1,allKeys[key][4]-12,totalSongLength,1,60)
 
 with open("out.mid", "wb") as output_file:
     finalMIDI.writeFile(output_file)
