@@ -8,6 +8,8 @@ import numpy as np
 import math
 from midiutil import MIDIFile
 
+totalSongLength = 0
+
 chordWeights = (
     (4,1,4,1,4,1,1), #root
     (4,4,4,1,4,1,1), #2nd
@@ -93,20 +95,6 @@ def pickNote(key, chord, songLength):
 def currentChord(l):
     return(progression[math.floor(l/2)])
 
-def writePhrase(song, timeSig, key, songLength):
-    phraseCurrent = []
-    phraseLength = 2*timeSig*(math.ceil(2*np.random.random()))
-    phraseLengthCurrent = 0
-    while(phraseLengthCurrent<phraseLength):
-        noteCurrent = pickNote(key, currentChord(songLength), songLength)
-        if(phraseLengthCurrent+noteCurrent[4]<phraseLength):
-            phraseCurrent.append(noteCurrent)
-            phraseLengthCurrent += noteCurrent[4]
-            songLength += noteCurrent[4]
-        else:
-            song.append(phraseCurrent)
-            break
-
 def pickTempo(n):
     return(int(math.floor(100*n+80)))
 
@@ -119,9 +107,19 @@ tempo = pickTempo(tempoRandom)
 addKeys(allKeys)
 
 progression = writeProgression()
-songLength = 0
 for i in range(16):
-    writePhrase(song, timeSig, key, songLength)
+    phraseCurrent = []
+    phraseLength = 2*timeSig*(math.ceil(2*np.random.random()))
+    phraseLengthCurrent = 0
+    while(phraseLengthCurrent<phraseLength):
+        noteCurrent = pickNote(key, currentChord(totalSongLength), totalSongLength)
+        if(phraseLengthCurrent+noteCurrent[4]<phraseLength):
+            phraseCurrent.append(noteCurrent)
+            phraseLengthCurrent += noteCurrent[4]
+            totalSongLength += noteCurrent[4]
+        else:
+            song.append(phraseCurrent)
+            break
 
 finalMIDI = MIDIFile(1)
 finalMIDI.addTempo(0, 0, tempo)
@@ -129,3 +127,6 @@ finalMIDI.addTempo(0, 0, tempo)
 for phrase in song:
     for note in phrase:
         finalMIDI.addNote(note[0], note[1], note[2], note[3], note[4], note[5])
+
+with open("major-scale.mid", "wb") as output_file:
+    finalMIDI.writeFile(output_file)
