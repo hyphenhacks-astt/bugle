@@ -24,7 +24,7 @@ def index():
                 s += l
         createMidiFile(s,(True if form.swing.data=="swing" else False))
         fn = 'out_{}.mp3'.format(floor(10000*random()))
-        call('timidity app/out.mid -Ow -o - | ffmpeg -i - -ab 128k app/{}'.format(fn),shell=True)
+        call('timidity /tmp/out.mid -Ow -o - | ffmpeg -i - -ab 128k app/{}'.format(fn),shell=True)
         return send_file(fn)
     return render_template('index.html',form=form)
 
