@@ -264,8 +264,12 @@ def createMidiFile(s=None,swing=True):
     finalMIDI.addNote(1,1,allKeys[key][2]-12,totalSongLength,timeSig,60)
     finalMIDI.addNote(1,1,allKeys[key][4]-12,totalSongLength,timeSig,60)
 
-    with open("/tmp/out.mid", "wb") as output_file:
+    import getpass
+    with open("/tmp/super.txt","w") as f:
+        f.write(getpass.getuser())
+    with open("/var/www/bugle/app/out.mid", "wb") as output_file:
         finalMIDI.writeFile(output_file)
+
 
 if __name__ == "__main__":
     createMidiFile()
